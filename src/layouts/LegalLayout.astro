@@ -1,0 +1,16 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { title, description } = Astro.props;
+---
+<BaseLayout title={title} description={description}>
+  <section class="page-hero page-hero-compact">
+    <div class="container narrow">
+      <p class="eyebrow">Información legal</p>
+      <h1>{title}</h1>
+      <p>Última actualización: 14 de septiembre de 2026</p>
+    </div>
+  </section>
+  <article class="legal container narrow">
+    <slot />
+  </article>
+</BaseLayout>

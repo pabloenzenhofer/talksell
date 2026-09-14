@@ -1,0 +1,62 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const {
+  title = 'TalkSell Automation Studio',
+  description = 'Automatizaciones con inteligencia artificial para empresas que quieren vender mejor y operar con menos tareas repetitivas.',
+  image = 'https://raw.githubusercontent.com/pabloenzenhofer/imagenes/main/03_avatar_instagram_tiktok.png',
+  noindex = false
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, 'https://talksellstudio.com').toString();
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'TalkSell Automation Studio',
+  legalName: 'Pablo Enzenhofer',
+  url: 'https://talksellstudio.com',
+  email: 'info@talksellstudio.com',
+  telephone: '+54 9 11 5110-9632',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Larrea 421 1C',
+    addressLocality: 'Ciudad Autónoma de Buenos Aires',
+    addressCountry: 'AR'
+  },
+  areaServed: ['Argentina', 'Latin America'],
+  founder: { '@type': 'Person', name: 'Pablo Enzenhofer' },
+  serviceType: ['Automatización de procesos', 'Integraciones con inteligencia artificial', 'Automatización comercial']
+};
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#080A09" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow'} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="https://raw.githubusercontent.com/pabloenzenhofer/imagenes/main/02_simbolo_transparente.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="TalkSell Automation Studio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <Header />
+    <main id="contenido"><slot /></main>
+    <Footer />
+    <a class="whatsapp-float" href="https://wa.me/5491151109632?text=Hola%20TalkSell%2C%20quiero%20consultar%20por%20una%20automatizaci%C3%B3n." target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">WA</a>
+  </body>
+</html>

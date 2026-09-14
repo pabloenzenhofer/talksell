@@ -1,0 +1,15 @@
+---
+const { title = '¿Qué proceso te está haciendo perder tiempo?', text = 'Lo revisamos juntos y te proponemos una automatización concreta, con alcance y próximos pasos claros.' } = Astro.props;
+---
+<section class="section">
+  <div class="container">
+    <div class="cta-panel">
+      <div>
+        <p class="eyebrow">Primera conversación</p>
+        <h2>{title}</h2>
+        <p>{text}</p>
+      </div>
+      <a class="button" href="https://wa.me/5491151109632?text=Hola%20TalkSell%2C%20quiero%20agendar%20una%20reuni%C3%B3n%20para%20evaluar%20una%20automatizaci%C3%B3n." target="_blank" rel="noopener">Agendar una reunión <span>↗</span></a>
+    </div>
+  </div>
+</section>

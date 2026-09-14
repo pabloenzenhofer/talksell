@@ -1,0 +1,16 @@
+{
+  "name": "TalkSell Automation Studio",
+  "short_name": "TalkSell",
+  "description": "Automatizaciones con inteligencia artificial para empresas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080A09",
+  "theme_color": "#C8FF1A",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/pabloenzenhofer/imagenes/main/02_simbolo_transparente.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
