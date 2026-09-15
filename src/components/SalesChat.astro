@@ -1,0 +1,174 @@
+---
+const WEBHOOK_URL = 'https://n8n.psiconutriciononline.com/webhook/talksell-ia-ventas';
+---
+
+<div class="sales-chat" data-sales-chat data-endpoint={WEBHOOK_URL}>
+  <div class="sales-chat-header">
+    <div class="sales-chat-avatar" aria-hidden="true">TS</div>
+    <div>
+      <strong>IA de ventas TalkSell</strong>
+      <span><i aria-hidden="true"></i> Disponible ahora</span>
+    </div>
+  </div>
+
+  <div class="sales-chat-messages" data-chat-messages aria-live="polite">
+    <div class="chat-row chat-row-assistant">
+      <div class="chat-bubble">
+        Hola. Soy la IA de ventas de TalkSell. Contame qué tipo de empresa tenés y qué parte del proceso comercial hoy depende demasiado de una persona.
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-suggestions" data-chat-suggestions aria-label="Respuestas sugeridas">
+    <button type="button">Se nos enfrían los leads</button>
+    <button type="button">Tenemos mucho seguimiento manual</button>
+    <button type="button">La información está dispersa</button>
+  </div>
+
+  <form class="sales-chat-form" data-chat-form>
+    <label class="sr-only" for="talksell-chat-input">Escribí tu mensaje</label>
+    <textarea id="talksell-chat-input" data-chat-input rows="1" maxlength="1500" placeholder="Contame sobre tu negocio…" required></textarea>
+    <button type="submit" data-chat-submit aria-label="Enviar mensaje">
+      <span>Enviar</span><span aria-hidden="true">↗</span>
+    </button>
+  </form>
+  <p class="sales-chat-note">No compartas contraseñas ni datos sensibles. Esta conversación se usa únicamente para demostrar el sistema.</p>
+</div>
+
+<script>
+  const chatRoot = document.querySelector('[data-sales-chat]');
+
+  if (chatRoot instanceof HTMLElement && chatRoot.dataset.ready !== 'true') {
+    chatRoot.dataset.ready = 'true';
+
+    const endpoint = chatRoot.dataset.endpoint;
+    const messages = chatRoot.querySelector('[data-chat-messages]');
+    const form = chatRoot.querySelector('[data-chat-form]');
+    const input = chatRoot.querySelector('[data-chat-input]');
+    const submit = chatRoot.querySelector('[data-chat-submit]');
+    const suggestions = chatRoot.querySelector('[data-chat-suggestions]');
+    const calendarUrl = 'https://calendar.app.google/nxdsWCTvyX6Fj58eA';
+    const storageKey = 'talksell_chat_session';
+
+    let sessionId;
+    try {
+      sessionId = localStorage.getItem(storageKey);
+      if (!sessionId) {
+        const randomId = typeof crypto.randomUUID === 'function'
+          ? crypto.randomUUID()
+          : Math.random().toString(36).slice(2) + Date.now().toString(36);
+        sessionId = 'talksell_' + randomId;
+        localStorage.setItem(storageKey, sessionId);
+      }
+    } catch {
+      sessionId = 'talksell_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
+
+    const addMessage = (text, role, options = {}) => {
+      if (!(messages instanceof HTMLElement)) return null;
+      const row = document.createElement('div');
+      row.className = 'chat-row chat-row-' + role;
+
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble';
+      bubble.textContent = text;
+      row.appendChild(bubble);
+
+      if (options.loading) {
+        bubble.classList.add('chat-bubble-loading');
+        bubble.setAttribute('aria-label', 'La IA está escribiendo');
+        bubble.textContent = '';
+        for (let index = 0; index < 3; index += 1) {
+          bubble.appendChild(document.createElement('i'));
+        }
+      }
+
+      if (options.calendar) {
+        const link = document.createElement('a');
+        link.className = 'chat-calendar';
+        link.href = options.calendarUrl || calendarUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = 'Agendar mi mapeo ↗';
+        row.appendChild(link);
+      }
+
+      messages.appendChild(row);
+      messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+      return row;
+    };
+
+    const setLoading = (loading) => {
+      if (submit instanceof HTMLButtonElement) submit.disabled = loading;
+      if (input instanceof HTMLTextAreaElement) input.disabled = loading;
+    };
+
+    if (suggestions instanceof HTMLElement && input instanceof HTMLTextAreaElement && form instanceof HTMLFormElement) {
+      suggestions.querySelectorAll('button').forEach((button) => {
+        button.addEventListener('click', () => {
+          input.value = button.textContent?.trim() || '';
+          form.requestSubmit();
+        });
+      });
+    }
+
+    if (input instanceof HTMLTextAreaElement) {
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          if (form instanceof HTMLFormElement) form.requestSubmit();
+        }
+      });
+    }
+
+    if (form instanceof HTMLFormElement && input instanceof HTMLTextAreaElement) {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const message = input.value.trim();
+        if (!message || !endpoint) return;
+
+        addMessage(message, 'user');
+        input.value = '';
+        if (suggestions instanceof HTMLElement) suggestions.hidden = true;
+        setLoading(true);
+        const loadingRow = addMessage('', 'assistant', { loading: true });
+
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message,
+              sessionId,
+              pageUrl: window.location.href
+            })
+          });
+
+          const responseText = await response.text();
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          if (!responseText.trim()) throw new Error('Respuesta vacía');
+
+          const data = JSON.parse(responseText);
+          const reply = typeof data.reply === 'string' ? data.reply.trim() : '';
+          if (!reply) throw new Error('Respuesta sin mensaje');
+
+          loadingRow?.remove();
+          addMessage(reply, 'assistant', {
+            calendar: data.showCalendar === true,
+            calendarUrl: data.calendarUrl
+          });
+        } catch (error) {
+          console.error('TalkSell chat:', error);
+          loadingRow?.remove();
+          addMessage('Ahora mismo no pude responder. Podés intentarlo nuevamente o agendar un mapeo con Pablo.', 'assistant', {
+            calendar: true,
+            calendarUrl
+          });
+        } finally {
+          setLoading(false);
+          input.focus();
+        }
+      });
+    }
+  }
+</script>
