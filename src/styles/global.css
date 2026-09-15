@@ -145,3 +145,14 @@ h3 { font-size: 1.5rem; }
   .values { grid-template-columns:1fr; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } .marquee-track { animation:none; } * { transition:none!important; } }
+
+.ai-demo { padding-top: 90px; }
+.ai-card-primary { background: var(--lime); border-color: var(--lime); color: var(--black); }
+.ai-card-primary p { color: #35422e; }
+.ai-card-primary .icon-box { background: var(--black); color: var(--lime); }
+.demo-pending { display: inline-flex; margin-top: 14px; padding: 8px 12px; border: 1px solid rgba(8,10,9,.28); border-radius: 999px; color: #35422e; font: 700 .76rem var(--font-display); text-transform: uppercase; letter-spacing: .08em; }
+.cta-section { padding-bottom: 65px; }
+.process-section { padding-top: 65px; }
+@media (max-width: 860px) {
+  .process-section .section-title .button { width: 100%; }
+}
