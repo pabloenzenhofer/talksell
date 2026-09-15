@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTA from '../components/CTA.astro';
+import SalesChat from '../components/SalesChat.astro';
 ---
 <BaseLayout title="TalkSell | Automatización e inteligencia artificial para empresas" description="Detectamos oportunidades de automatización y construimos sistemas con IA para ahorrar cientos de horas en tareas repetitivas.">
   <section class="hero">
@@ -24,31 +25,20 @@ import CTA from '../components/CTA.astro';
     <div class="container">
       <div class="section-title">
         <div><p class="eyebrow">IA en acción</p><h2>No imagines lo que puede hacer. Conversá con ella.</h2></div>
-        <p>La mejor forma de entender una automatización es experimentarla en una conversación real.</p>
+        <p>Contale cómo funciona tu negocio. Va a detectar oportunidades concretas y mostrarte cómo podría vender y hacer seguimiento por tu empresa.</p>
       </div>
-      <div class="service-grid">
-        <article class="card service-card ai-card-primary">
-          <div class="icon-box">01</div>
-          <div>
-            <h3>Conversá con nuestra IA de ventas y fijate lo que puede hacer por tu empresa.</h3>
-            <p>Contale cómo funciona tu negocio y descubrí qué conversaciones, seguimientos y tareas podría automatizar.</p>
-            <span class="demo-pending">Demo en preparación</span>
-          </div>
-        </article>
-        <article class="card service-card">
-          <div class="icon-box">02</div>
-          <div>
-            <h3>IA aplicada al trabajo</h3>
-            <p>Puede leer, clasificar, resumir, redactar y preparar respuestas. Cuando el proceso exige criterio, deriva la decisión a una persona.</p>
-          </div>
-        </article>
-        <article class="card service-card">
-          <div class="icon-box">03</div>
-          <div>
-            <h3>Sistemas conectados</h3>
-            <p>Instagram, WhatsApp, email, formularios, CRM y bases de datos comparten información para que el proceso avance sin duplicar trabajo.</p>
-          </div>
-        </article>
+      <div class="ai-demo-layout">
+        <div class="ai-demo-copy">
+          <span class="ai-live-label"><i aria-hidden="true"></i> Demo en vivo</span>
+          <h3>Una IA aplicada a tu proceso comercial, no un contestador automático.</h3>
+          <p>Entiende el contexto, recuerda la conversación y transforma un problema cotidiano en un primer mapa de automatización.</p>
+          <ul>
+            <li>Detecta dónde se enfrían los leads.</li>
+            <li>Propone automatizaciones según tu negocio.</li>
+            <li>Invita a avanzar cuando encuentra una oportunidad real.</li>
+          </ul>
+        </div>
+        <SalesChat />
       </div>
     </div>
   </section>
