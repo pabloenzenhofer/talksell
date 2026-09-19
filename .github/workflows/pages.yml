@@ -1,4 +1,4 @@
-name: Publicar vista previa
+name: Publicar sitio
 
 on:
   push:
@@ -40,10 +40,8 @@ jobs:
       - name: Construir sitio
         run: npm run build
 
-      - name: Adaptar rutas para la vista previa
-        run: |
-          find dist -type f -name '*.html' -exec sed -i 's|href="/|href="/talksell/|g; s|src="/|src="/talksell/|g' {} +
-          touch dist/.nojekyll
+      - name: Preparar GitHub Pages
+        run: touch dist/.nojekyll
 
       - name: Preparar publicación
         uses: actions/upload-pages-artifact@v3
