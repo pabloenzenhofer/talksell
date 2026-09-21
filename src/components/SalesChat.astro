@@ -32,7 +32,7 @@ const WEBHOOK_URL = 'https://n8n.psiconutriciononline.com/webhook/talksell-ia-ve
       <span>Enviar</span><span aria-hidden="true">↗</span>
     </button>
   </form>
-  <p class="sales-chat-note">No compartas contraseñas ni datos sensibles. Esta conversación se usa únicamente para demostrar el sistema.</p>
+  <p class="sales-chat-note">No compartas contraseñas ni datos sensibles. Esta conversación se usa únicamente para demostrar el sistema</p>
 </div>
 
 <script>
@@ -160,7 +160,7 @@ const WEBHOOK_URL = 'https://n8n.psiconutriciononline.com/webhook/talksell-ia-ve
         } catch (error) {
           console.error('TalkSell chat:', error);
           loadingRow?.remove();
-          addMessage('Ahora mismo no pude responder. Podés intentarlo nuevamente o agendar un mapeo con Pablo.', 'assistant', {
+          addMessage('Ahora mismo no pude responder. Podés intentarlo nuevamente o agendar un mapeo con Pablo', 'assistant', {
             calendar: true,
             calendarUrl
           });
